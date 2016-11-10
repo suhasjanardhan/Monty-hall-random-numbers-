@@ -1,0 +1,148 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <ctime>
+#include<cstdlib>
+
+using namespace std;
+typedef int Door;
+
+const int SIMULATION_COUNT = 100;
+
+
+/**
+ * Suggested problem decomposition.
+ * You do not have to use these function declarations.
+ */
+
+void simulate(int sequence, int& win1, int& win2)
+{
+	Door first;
+	Door carbehinddoor;
+	Door  openeddoor1;
+	Door second;
+	Door hideCar();
+	Door makeFirstChoice();
+//	Door makeFirstChoice();
+	Door makeSecondChoice(Door firstDoor, Door openedDoor);
+	Door openDoor(Door firstChoiceDoor, Door carBehindDoor);
+	carbehinddoor=hideCar();
+	
+	first=makeFirstChoice();
+	
+	openeddoor1=openDoor(first,carbehinddoor);
+	
+	second=makeSecondChoice(first,openeddoor1);
+	
+
+
+	if(second==carbehinddoor)
+	{
+		win2++;
+		cout<<sequence<<"\t"<<carbehinddoor<<"\t"<<first<<"\t"<<openeddoor1<<"\t"<<second<<"\t"<<"\t"<<"yes"<<endl;
+	}
+	else if(first==carbehinddoor)
+	{
+		win1++;
+		cout<<sequence<<"\t"<<carbehinddoor<<"\t"<<first<<"\t"<<openeddoor1<<"\t"<<second<<"\t"<<"yes"<<endl;
+	}
+
+}
+
+Door hideCar()
+{
+	int a=0;
+	a=rand()%3+1;
+	return a;
+}
+Door openDoor(Door firstChoiceDoor, Door carBehindDoor)
+{
+	int openeddoor;
+	int temp=firstChoiceDoor;
+	int temp1=0;
+	int x=0;
+
+	if(firstChoiceDoor==carBehindDoor)
+	{
+		do
+		{
+			openeddoor=rand()%3+1;
+		}while(openeddoor==temp);
+		return openeddoor;
+
+	}
+	else
+	{
+		do
+		{
+			openeddoor=rand()%3+1;
+		}while((openeddoor==firstChoiceDoor)||(openeddoor==carBehindDoor));
+		return openeddoor;
+	}
+
+  
+
+}
+Door makeFirstChoice()
+{
+	int first=0;
+	first=rand()%3+1;
+	return first;
+}
+
+Door makeSecondChoice(Door firstDoor, Door openedDoor)
+{
+    
+	int secondchoice=0;
+	
+
+		do
+		{
+		 secondchoice=rand()%3+1;
+		
+		}while((secondchoice==firstDoor)||(secondchoice==openedDoor));
+	
+		return secondchoice;
+
+}
+
+
+
+void printHeader()
+{
+   cout<<"#"<<"\t"<<"Car"<<"\t"<<"First"<<"\t"<<"Opened"<<"\t"<<"Second"<<"\t"<<"Win"<<"\t"<<"Win"<<endl;
+   cout<<"\t"<<"here"<<"\t"<<"choice"<<"\t"<<"door"<<"\t"<<"choice"<<"\t"<<"first"<<"\t"<<"second"<<endl;
+   
+}
+
+/**
+ * Main
+ */
+int main()
+{
+    int win1 = 0, win2 = 0;
+
+    srand(time(NULL));  // seed the random number generator
+    printHeader();
+
+    // Run the simulations.
+    for (int i = 1; i <= SIMULATION_COUNT; i++)
+    	{
+    	   simulate(i, win1, win2);
+    	   
+    	}
+
+    cout << endl;
+    cout << setw(4) << win1 << " wins if stay with the first choice" << endl;
+    cout << setw(4) << win2 << " wins if switch to the second choice" << endl;
+
+    cout.setf(ios::fixed);
+    cout.setf(ios::showpoint);
+    cout.precision(1);
+
+    cout << endl;
+    cout << "Win ratio of switch over stay: ";
+    cout << static_cast<double>(win2)/win1 << endl;
+}
+
+/***** Complete this program. ****/
